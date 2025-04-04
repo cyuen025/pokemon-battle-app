@@ -1,4 +1,4 @@
-# React Interview App
+# React App
 ## Prerequisites
 Ensure that you have [Node.js](https://nodejs.org/en/download/) installed on your machine.
 
