@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Pokemon, Move, getMove } from '../apiService';
 
 interface BattleProps {
@@ -11,15 +11,25 @@ const Battle: React.FC<BattleProps> = ({ pokemonA, pokemonB }: BattleProps) => {
   const [moveB, setMoveB] = useState<Move | null>(null);
   const [battleLog, setBattleLog] = useState<string>('');
 
-  // Returns a random move from an array of moves
-  const getRandomMove = (
-    moves: { move: { name: string; url: string } }[]
-  ): { move: { name: string; url: string } } => {
-    const moveIndex = Math.floor(Math.random() * moves.length);
-    return moves[moveIndex];
-  };
+  // Reset battle state when new Pokemon are selected
+  useEffect(() => {
+    setMoveA(null);
+    setMoveB(null);
+    setBattleLog('');
+  }, [pokemonA, pokemonB]);
 
-  const startBattle = async () => {
+  // Returns a random move from an array of moves
+  const getRandomMove = useCallback(
+    (
+      moves: { move: { name: string; url: string } }[]
+    ): { move: { name: string; url: string } } => {
+      const moveIndex = Math.floor(Math.random() * moves.length);
+      return moves[moveIndex];
+    },
+    []
+  );
+
+  const startBattle = useCallback(async () => {
     if (pokemonA && pokemonB) {
       const move1 = getRandomMove(pokemonA.moves);
       const move2 = getRandomMove(pokemonB.moves);
@@ -36,7 +46,7 @@ const Battle: React.FC<BattleProps> = ({ pokemonA, pokemonB }: BattleProps) => {
         setBattleLog('An error occurred during battle.');
       }
     }
-  };
+  }, [pokemonA, pokemonB, getRandomMove]);
 
   useEffect(() => {
     if (pokemonA && pokemonB && moveA && moveB) {
