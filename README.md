@@ -1,4 +1,4 @@
-# React App
+# Pokemon Battle React App
 ## Overview
 - Two random Pokemon are selected from the Pokemon API at https://pokeapi.co/
 - Two random battle moves are selected and the winner is determined by the greatest attack strength, or a draw if the value is equal
